@@ -2,6 +2,7 @@ package items.actors;
 
 import com.sun.istack.internal.Nullable;
 
+import items.actions.ActionUtils.Actions;
 import items.behaviours.BaseBehaviour;
 
 /**
@@ -139,13 +140,13 @@ public class BaseActor {
 	 * @return The portion of the prize that this actor wants to obtain from the
 	 *         fight.
 	 */
-	public double getDesiredPortion(@Nullable BaseActor other) {
-		double desiredPortion = 0.0d;
+	public Actions getPerformedAction(@Nullable BaseActor other) {
+		Actions actionTaken = Actions.GIVE;
 		// Failsafe. No behaviour means actor will eventually die due to lack of energy
 		if (this.actorBehaviour != null) {
-			desiredPortion = this.actorBehaviour.getDesiredPortion(other != null ? other.getId() : -1);
+			actionTaken = this.actorBehaviour.getAction();
 		}
-		return desiredPortion;
+		return actionTaken;
 	}
 
 	@Override

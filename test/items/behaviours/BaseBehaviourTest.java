@@ -2,9 +2,11 @@ package items.behaviours;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
+
+import items.actions.ActionUtils.Actions;
 
 public class BaseBehaviourTest {
 
@@ -15,17 +17,25 @@ public class BaseBehaviourTest {
 	}
 
 	@Test
-	public void testGetDesiredPortion() throws Exception {
-		BaseBehaviour bb = new BaseBehaviour();
-		assertNotNull("BaseBehaviour is null", bb.getDesiredPortion(1));
-		assertEquals("BaseBehaviour.getDesiredPortion() is null", bb.getDesiredPortion(1), 1.0d, 0.0d);
-	}
+		public void testGetAction() throws Exception {
+			BaseBehaviour bb = new BaseBehaviour();
+			assertNotNull("BaseBehaviour.getAction() is null", bb.getAction());
+			assertEquals("BaseBehaviour.getAction() unexpected value", bb.getAction(), Actions.GIVE);
+		}
 
 	@Test
-		public void testPrepareNextRound() throws Exception {
-			BaseBehaviour bb = new BaseBehaviour();
-			bb.prepareNextRound();
-			assertTrue(true);
-		}
+	public void testPrepareNextRound() throws Exception {
+		BaseBehaviour bb = new BaseBehaviour();
+		assertSame("BaseBehaviour.getAction() unexpected value", bb.getAction(), Actions.GIVE);
+
+		bb.prepareNextRound(Actions.GIVE);
+		assertSame("BaseBehaviour.getAction() unexpected value", bb.getAction(), Actions.GIVE);
+
+		bb.prepareNextRound(Actions.TAKE);
+		assertSame("BaseBehaviour.getAction() unexpected value", bb.getAction(), Actions.GIVE);
+
+		bb.prepareNextRound(Actions.SHARE);
+		assertSame("BaseBehaviour.getAction() unexpected value", bb.getAction(), Actions.GIVE);
+	}
 
 }

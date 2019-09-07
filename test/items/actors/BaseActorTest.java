@@ -8,7 +8,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import items.actions.ActionUtils.Actions;
 import items.behaviours.BaseBehaviour;
+import items.behaviours.implementations.ShareBehaviour;
 
 /**
  * Test class for the BaseActor class.
@@ -128,19 +130,20 @@ public class BaseActorTest {
 	}
 
 	@Test
-	public void testGetDesiredPortion() throws Exception {
+	public void testGetPerformedAction() throws Exception {
 		BaseActor ba = new BaseActor("Name", 1, 1.0d);
-		assertEquals("BaseActor.getDesiredPortion() unexpected value for null behaviour", ba.getDesiredPortion(null), 0.0d, 0.0d);
-		ba.setBehaviour(new BaseBehaviour());
-		
-		double baseBehaviourDefaultVal = new BaseBehaviour().getDesiredPortion(0);
-		assertEquals("BaseActor.getDesiredPortion() unexpected value for other = null", ba.getDesiredPortion(null), baseBehaviourDefaultVal, 0.0d);
+		assertEquals("BaseActor.getDesiredPortion() unexpected value for null behaviour", ba.getPerformedAction(null),
+				Actions.GIVE);
+
+		ba.setBehaviour(new ShareBehaviour());
+		assertEquals("BaseActor.getDesiredPortion() unexpected value for other = null", ba.getPerformedAction(null),
+				Actions.SHARE);
 
 		BaseActor baOther = new BaseActor("NameOther", 1, 1.0d);
 		baOther.setBehaviour(new BaseBehaviour());
-		assertEquals("BaseActor.getDesiredPortion() unexpected value after fight", ba.getDesiredPortion(baOther), baseBehaviourDefaultVal, 0.0d);
-		
-		
+		assertEquals("BaseActor.getDesiredPortion() unexpected value after fight", ba.getPerformedAction(baOther),
+				Actions.SHARE);
+
 	}
 
 }

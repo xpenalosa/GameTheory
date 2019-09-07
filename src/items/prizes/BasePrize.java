@@ -1,6 +1,9 @@
 package items.prizes;
 
+import items.actions.ActionUtils;
+import items.actions.ActionUtils.Actions;
 import items.actors.BaseActor;
+import javafx.util.Pair;
 
 /**
  * Prize used by the actors to obtain one unit of energy. When two actors try to
@@ -55,24 +58,15 @@ public class BasePrize {
 
 	public void updateActors() {
 
-		switch (this.actorCount) {
-		case 1:
-			this.a1.increaseEnergy(this.a1.getDesiredPortion(null));
-			break;
-		case 2:
-			double energyA1 = this.a1.getDesiredPortion(this.a2);
-			double energyA2 = this.a2.getDesiredPortion(this.a1);
-			if (energyA1 + energyA2 > 1.0d) {
-				// Actors are unable to share the prize; neither gets a portion
-				return;
-			} else {
-				// Actors can share the price; both get their portions
-				this.a1.increaseEnergy(energyA1);
-				this.a2.increaseEnergy(energyA2);
-			}
-			break;
-		default:
-			return;
+		Actions action1 = this.a1 != null ? this.a1.getPerformedAction(this.a2) : Actions.GIVE;
+		Actions action2 = this.a2 != null ? this.a2.getPerformedAction(this.a1) : Actions.GIVE;
+		
+		Pair<Double,Double> energyObtained = ActionUtils.getEnergyFromActions(action1, action2);
+		if (this.a1 != null) {
+			this.a1.increaseEnergy(energyObtained.getKey());
+		}
+		if (this.a2 != null) {
+			this.a2.increaseEnergy(energyObtained.getValue());
 		}
 	}
 

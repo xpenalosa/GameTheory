@@ -1,5 +1,7 @@
 package items.behaviours;
 
+import items.actions.ActionUtils.Actions;
+
 /**
  * Behaviour of an actor when fighting with another actor over a prize.
  * 
@@ -17,18 +19,16 @@ public class BaseBehaviour {
 	 * When fighting another actor for a prize, determine the proportion of the
 	 * price that the actor wants to obtain.
 	 * 
-	 * @param otherId The type identifier for the opposing actor.
-	 * @return The portion of the prize that this actor wants to obtain from the
-	 *         fight.
+	 * @return The action taken.
 	 */
-	public double getDesiredPortion(Integer otherId) {
-		return 1.0d;
+	public Actions getAction() {
+		return Actions.GIVE;
 	}
 
 	/**
 	 * Alter behaviour between rounds.
 	 */
-	public void prepareNextRound() {
+	public void prepareNextRound(Actions opponentAction) {
 	}
 
 }

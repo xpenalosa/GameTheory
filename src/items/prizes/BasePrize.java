@@ -38,7 +38,7 @@ public class BasePrize {
 		return this.actorCount < 2;
 	}
 
-	public boolean addActor(BaseActor actor) {
+	public void addActor(BaseActor actor) {
 		switch (this.actorCount) {
 		case 0:
 			this.a1 = actor;
@@ -49,9 +49,8 @@ public class BasePrize {
 			this.actorCount++;
 			break;
 		default:
-			return false;
+			break;
 		}
-		return true;
 	}
 
 	public void updateActors() {

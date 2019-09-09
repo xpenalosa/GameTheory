@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import games.utils.GameUtils;
@@ -13,8 +11,6 @@ import items.actors.BaseActor;
 import items.prizes.BasePrize;
 
 public class BaseGame {
-
-	protected static Logger logger = Logger.getLogger(BaseGame.class.getName());
 
 	protected List<BasePrize> prizes;
 
@@ -29,6 +25,9 @@ public class BaseGame {
 	}
 
 	public void executeRound() {
+		if (this.population.size() == 0) {
+			return;
+		}
 		this.assignToPrizes();
 		this.updatePopulation();
 	}
@@ -40,13 +39,10 @@ public class BaseGame {
 		Collections.shuffle(this.population);
 
 		// Assign to prizes
-		int unassignedPopulation = 0;
 		for (int i = 0; i < this.population.size(); i++) {
-			if (!prizes.get(i % prizes.size()).addActor(this.population.get(i))) {
-				unassignedPopulation++;
-			}
+			BasePrize prize = this.prizes.get(i % this.prizes.size());
+			prize.addActor(this.population.get(i));
 		}
-		BaseGame.logger.log(Level.INFO, String.format("Unassigned actors: %d", unassignedPopulation));
 	}
 
 	protected void updatePopulation() {
@@ -71,7 +67,7 @@ public class BaseGame {
 		Map<String, Long> populationCount = this.population.stream()
 				.collect(Collectors.groupingBy(actor -> actor.getBehaviourName(), Collectors.counting()));
 		// Log data
-		BaseGame.logger.log(Level.INFO, String.format("Current populations: %s", populationCount.toString()));
+		System.out.println(String.format("%s", populationCount.toString()));
 	}
 
 }

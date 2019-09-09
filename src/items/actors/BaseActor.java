@@ -91,7 +91,7 @@ public class BaseActor {
 	 * @return True if the actor can reproduce. False otherwise.
 	 */
 	public boolean canReproduce() {
-		return this.actorEnergy > 1.0d;
+		return this.actorEnergy >= 1.0d;
 	}
 
 	/**

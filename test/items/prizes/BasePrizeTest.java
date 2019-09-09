@@ -27,17 +27,6 @@ public class BasePrizeTest extends TestCase {
 	}
 
 	@Test
-	public void testAddActor() throws Exception {
-		BasePrize bp = new BasePrize();
-		BaseActor ba = new BaseActor();
-		assertTrue("BasePrize.addActor() unexpected value with no actors", bp.addActor(ba));
-		BaseActor ba2 = new BaseActor();
-		assertTrue("BasePrize.addActor() unexpected value with 1 actor", bp.addActor(ba2));
-		BaseActor ba3 = new BaseActor();
-		assertFalse("BasePrize.addActor() unexpected value with 2 actors", bp.addActor(ba3));
-	}
-
-	@Test
 	public void testUpdateActors() throws Exception {
 		BasePrize bp = new BasePrize();		
 		// No actors, no modifications
@@ -47,8 +36,8 @@ public class BasePrizeTest extends TestCase {
 		bp.addActor(ba);
 		bp.updateActors();
 		// One actor, BaseBehaviour takes the prize and adds 1 energy.
-		assertEquals("BasePrize.updateActors() unexpected energy value with 1 actor", ba.getEnergy(), 0.5d, 0.0d);
-		ba.reduceEnergy(0.5d);
+		assertEquals("BasePrize.updateActors() unexpected energy value with 1 actor", ba.getEnergy(), 1.0d, 0.0d);
+		ba.reduceEnergy(ba.getEnergy());
 		
 		BaseActor ba2 = new BaseActor(BehaviourFactory.create("ShareBehaviour"));
 		bp.addActor(ba2);
@@ -56,7 +45,7 @@ public class BasePrizeTest extends TestCase {
 		// Two actors, ShareBehaviour splits the prize and each actor obtains 0.5 energy.
 		assertEquals("BasePrize.updateActors() unexpected energy value with 2 actors (1)", ba.getEnergy(), 0.5d, 0.0d);
 		assertEquals("BasePrize.updateActors() unexpected energy value with 2 actors (2)", ba2.getEnergy(), 0.5d, 0.0d);
-		ba.reduceEnergy(0.5d);
+		ba.reduceEnergy(ba.getEnergy());
 		
 		BaseActor ba3 = new BaseActor(BehaviourFactory.create("TakeBehaviour"));
 		bp.clear();

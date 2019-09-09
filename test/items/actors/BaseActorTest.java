@@ -132,16 +132,16 @@ public class BaseActorTest {
 	@Test
 	public void testGetPerformedAction() throws Exception {
 		BaseActor ba = new BaseActor("Name", 1, 1.0d);
-		assertEquals("BaseActor.getDesiredPortion() unexpected value for null behaviour", ba.getPerformedAction(null),
+		assertEquals("BaseActor.getDesiredPortion() unexpected value for null behaviour", ba.getPerformedAction(),
 				Actions.GIVE);
 
 		ba.setBehaviour(new ShareBehaviour());
-		assertEquals("BaseActor.getDesiredPortion() unexpected value for other = null", ba.getPerformedAction(null),
+		assertEquals("BaseActor.getDesiredPortion() unexpected value for other = null", ba.getPerformedAction(),
 				Actions.SHARE);
 
 		BaseActor baOther = new BaseActor("NameOther", 1, 1.0d);
 		baOther.setBehaviour(new BaseBehaviour());
-		assertEquals("BaseActor.getDesiredPortion() unexpected value after fight", ba.getPerformedAction(baOther),
+		assertEquals("BaseActor.getDesiredPortion() unexpected value after fight", ba.getPerformedAction(),
 				Actions.SHARE);
 
 	}

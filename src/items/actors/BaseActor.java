@@ -1,7 +1,5 @@
 package items.actors;
 
-import com.sun.istack.internal.Nullable;
-
 import items.actions.ActionUtils.Actions;
 import items.behaviours.BaseBehaviour;
 import items.behaviours.implementations.IdleBehaviour;
@@ -140,11 +138,10 @@ public class BaseActor {
 	 * When fighting another actor for a prize, determine the proportion of the
 	 * price that the actor wants to obtain.
 	 * 
-	 * @param other The opposing actor.
 	 * @return The portion of the prize that this actor wants to obtain from the
 	 *         fight.
 	 */
-	public Actions getPerformedAction(@Nullable BaseActor other) {
+	public Actions getPerformedAction() {
 		Actions actionTaken = Actions.GIVE;
 		// Failsafe. No behaviour means actor will eventually die due to lack of energy
 		if (this.actorBehaviour != null) {

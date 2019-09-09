@@ -56,8 +56,8 @@ public class BasePrize {
 
 	public void updateActors() {
 
-		Actions action1 = this.a1 != null ? this.a1.getPerformedAction(this.a2) : Actions.GIVE;
-		Actions action2 = this.a2 != null ? this.a2.getPerformedAction(this.a1) : Actions.GIVE;
+		Actions action1 = this.a1 != null ? this.a1.getPerformedAction() : Actions.GIVE;
+		Actions action2 = this.a2 != null ? this.a2.getPerformedAction() : Actions.GIVE;
 		
 		if (this.a1 != null) {
 			this.a1.increaseEnergy(Actions.energyRelations[action1.ordinal()][action2.ordinal()]);

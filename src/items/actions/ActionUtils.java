@@ -11,7 +11,7 @@ public abstract class ActionUtils {
 		
 		public static double[][] energyRelations = {
 			{0.0, 0.0, 0.0}, // Give
-			{0.5, 0.5, 0.0}, // Share
+			{1.0, 0.5, 0.0}, // Share
 			{1.0, 1.0, 0.0}  // Take
 		};
 	}

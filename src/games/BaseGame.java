@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import games.utils.GameUtils;
 import items.actors.BaseActor;
 import items.prizes.BasePrize;
 
@@ -19,11 +20,12 @@ public class BaseGame {
 
 	protected List<BaseActor> population;
 
-	public BaseGame(int prizeSize, int startingActors) {
+	public BaseGame(int prizeSize, String codedPopulationString) {
 		this.prizes = new ArrayList<BasePrize>();
 		for (int i = 0; i < prizeSize; i++) {
 			this.prizes.add(new BasePrize());
 		}
+		this.population = GameUtils.decodePopulationString(codedPopulationString);
 	}
 
 	public void executeRound() {
@@ -52,18 +54,20 @@ public class BaseGame {
 		this.prizes.parallelStream().forEach(prize -> prize.updateActors());
 		// Remove population without energy to survive
 		this.population.removeIf(actor -> !actor.canSurvive());
+		// Add new population based on the surviving population with enough energy
 		List<BaseActor> newActors = new ArrayList<BaseActor>();
 		for (BaseActor actor : this.population) {
 			if (actor.canReproduce()) {
 				newActors.add(new BaseActor(actor));
 			}
 		}
-		// Reset actor energies
+		this.population.addAll(newActors);
+		// Reset population energy
 		this.population.parallelStream().forEach(actor->actor.reduceEnergy(actor.getEnergy()));
 	}
 
 	public void printPopulations() {
-		// Collect data into actorId:count map
+		// Collect data into BehaviourType:count map
 		Map<String, Long> populationCount = this.population.stream()
 				.collect(Collectors.groupingBy(actor -> actor.getBehaviourName(), Collectors.counting()));
 		// Log data

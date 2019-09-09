@@ -1,9 +1,7 @@
 package items.prizes;
 
-import items.actions.ActionUtils;
 import items.actions.ActionUtils.Actions;
 import items.actors.BaseActor;
-import javafx.util.Pair;
 
 /**
  * Prize used by the actors to obtain one unit of energy. When two actors try to
@@ -61,12 +59,11 @@ public class BasePrize {
 		Actions action1 = this.a1 != null ? this.a1.getPerformedAction(this.a2) : Actions.GIVE;
 		Actions action2 = this.a2 != null ? this.a2.getPerformedAction(this.a1) : Actions.GIVE;
 		
-		Pair<Double,Double> energyObtained = ActionUtils.getEnergyFromActions(action1, action2);
 		if (this.a1 != null) {
-			this.a1.increaseEnergy(energyObtained.getKey());
+			this.a1.increaseEnergy(Actions.energyRelations[action1.ordinal()][action2.ordinal()]);
 		}
 		if (this.a2 != null) {
-			this.a2.increaseEnergy(energyObtained.getValue());
+			this.a2.increaseEnergy(Actions.energyRelations[action2.ordinal()][action1.ordinal()]);
 		}
 	}
 

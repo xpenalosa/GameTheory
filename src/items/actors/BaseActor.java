@@ -4,6 +4,7 @@ import com.sun.istack.internal.Nullable;
 
 import items.actions.ActionUtils.Actions;
 import items.behaviours.BaseBehaviour;
+import items.behaviours.implementations.IdleBehaviour;
 
 /**
  * Base entity of the game theory population. Each entity defines its energy
@@ -41,6 +42,7 @@ public class BaseActor {
 		this.actorName = "BaseActor";
 		this.actorId = -1;
 		this.actorEnergy = 1.0d;
+		this.actorBehaviour = new IdleBehaviour();
 	}
 
 	/**
@@ -50,6 +52,7 @@ public class BaseActor {
 		this.actorName = name;
 		this.actorId = id;
 		this.actorEnergy = 1.0d;
+		this.actorBehaviour = new IdleBehaviour();
 	}
 
 	/**
@@ -59,6 +62,7 @@ public class BaseActor {
 		this.actorName = name;
 		this.actorId = id;
 		this.actorEnergy = energy;
+		this.actorBehaviour = new IdleBehaviour();
 	}
 
 	/**

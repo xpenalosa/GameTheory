@@ -52,9 +52,7 @@ public class BaseGame {
 		this.prizes.parallelStream().forEach(prize -> prize.updateActors());
 		// Remove population without energy to survive
 		this.population.removeIf(actor -> !actor.canSurvive());
-		
 		this.population.parallelStream().forEach(actor->actor.reduceEnergy(1.0d));
-
 	}
 
 	public void printPopulations() {

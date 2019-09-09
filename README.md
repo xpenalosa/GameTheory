@@ -29,7 +29,7 @@ The strategies defined in the project for the different actors are as follows:
 - VENGEFUL: *SHARE* until an opponent *TAKE*s. Then always *TAKE*.
 
 
-###Usage:
+### Usage:
 
 	GameTheory <iterations> <prize_count> <population_string>
 	

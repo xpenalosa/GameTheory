@@ -12,10 +12,22 @@ import items.prizes.BasePrize;
 
 public class BaseGame {
 
+	/**
+	 * List of prizes available for the population.
+	 */
 	protected List<BasePrize> prizes;
 
+	/**
+	 * List of actors in the current round. 
+	 */
 	protected List<BaseActor> population;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param prizeSize Number of prizes to create.
+	 * @param codedPopulationString Coded population string (See README)
+	 */
 	public BaseGame(int prizeSize, String codedPopulationString) {
 		this.prizes = new ArrayList<BasePrize>();
 		for (int i = 0; i < prizeSize; i++) {
@@ -24,6 +36,9 @@ public class BaseGame {
 		this.population = GameUtils.decodePopulationString(codedPopulationString);
 	}
 
+	/**
+	 * Play out one round
+	 */
 	public void executeRound() {
 		if (this.population.size() == 0) {
 			return;
@@ -32,6 +47,9 @@ public class BaseGame {
 		this.updatePopulation();
 	}
 
+	/**
+	 * Assign the available population to the prizes
+	 */
 	protected void assignToPrizes() {
 		// Clear previous assignations
 		prizes.parallelStream().forEach(prize -> prize.clear());
@@ -45,6 +63,9 @@ public class BaseGame {
 		}
 	}
 
+	/**
+	 * Reproduce the actors with enough energy. Kill the actors with no energy.
+	 */
 	protected void updatePopulation() {
 		// Resolve all conflicts and update energies for every actor
 		this.prizes.parallelStream().forEach(prize -> prize.updateActors());
@@ -55,11 +76,12 @@ public class BaseGame {
 		for (BaseActor actor : this.population) {
 			if (actor.canReproduce()) {
 				newActors.add(new BaseActor(actor));
+				actor.reduceEnergy(BaseActor.REPRODUCTIVE_ENERGY / 2.0d);
 			}
 		}
 		this.population.addAll(newActors);
-		// Reset population energy
-		this.population.parallelStream().forEach(actor->actor.reduceEnergy(actor.getEnergy()));
+		// Lower population energy after surviving the round
+		this.population.parallelStream().forEach(actor->actor.reduceEnergy(BaseActor.SURVIVAL_ENERGY));
 	}
 
 	public void printPopulations() {

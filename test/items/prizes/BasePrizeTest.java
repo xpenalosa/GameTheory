@@ -43,8 +43,8 @@ public class BasePrizeTest extends TestCase {
 		bp.addActor(ba2);
 		bp.updateActors();
 		// Two actors, ShareBehaviour splits the prize and each actor obtains 0.5 energy.
-		assertEquals("BasePrize.updateActors() unexpected energy value with 2 actors (1)", ba.getEnergy(), 0.5d, 0.0d);
-		assertEquals("BasePrize.updateActors() unexpected energy value with 2 actors (2)", ba2.getEnergy(), 0.5d, 0.0d);
+		assertEquals("BasePrize.updateActors() unexpected energy value with 2 actors (1)", ba.getEnergy(), 1.0d, 0.0d);
+		assertEquals("BasePrize.updateActors() unexpected energy value with 2 actors (2)", ba2.getEnergy(), 1.0d, 0.0d);
 		ba.reduceEnergy(ba.getEnergy());
 		
 		BaseActor ba3 = new BaseActor(BehaviourFactory.create("TakeBehaviour"));
@@ -54,7 +54,7 @@ public class BasePrizeTest extends TestCase {
 		bp.updateActors();
 		// Two actors, TakeBehaviour fights for the whole prize and ShareBehaviour accepts. Actor 1 gets all the energy.
 		assertEquals("BasePrize.updateActors() unexpected energy value with 2 actors (1)", ba.getEnergy(), 0.0d, 0.0d);
-		assertEquals("BasePrize.updateActors() unexpected energy value with 2 actors (2)", ba3.getEnergy(), 1.0d, 0.0d);
+		assertEquals("BasePrize.updateActors() unexpected energy value with 2 actors (2)", ba3.getEnergy(), 1.5d, 0.0d);
 	}
 
 	@Test

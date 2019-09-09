@@ -1,20 +1,20 @@
 # GameTheory
 
 This game theory application is based on *prizes* and *actors*. 
-- Prizes are a resource with an energy value of 1.
+- Prizes are a resource with an energy value of 2.
 - Actors conform the population of the game and will fight each other for the resources in order to survive and reproduce.
 
 For each round, if the amount of actors is lower or equal to the amount of prizes each actor will be assigned to a different prize. Otherwise, up to two actors will be randomly assigned to each prize. When an actor is assigned a prize, it will perform one of three actions. If another actor has also been assigned to the same prize, the outcome of the interaction influences the amount of energy each actor recieves.
     
-		+--------+------+-------+------|
-		| Action |   Opponent action   |
-		+--------+------+-------+------|
-		|        | Give | Share | Take |
-		+--------+------+-------+------|
-		| Give   | 0    | 0     | 0    |
-		| Share  | 1    | 0.5   | 0    |
-		| Take   | 1    | 1     | 0    |
-		+--------+------+-------+------|
+	+--------+------+-------+------|
+	| Action |   Opponent action   |
+	+--------+------+-------+------|
+	|        | Give | Share | Take |
+	+--------+------+-------+------|
+	| Give   |  0.0 |   0.0 |  0.0 |
+	| Share  |  1.0 |   1.0 |  0.0 |
+	| Take   |  2.0 |   1.5 | -0.5 |
+	+--------+------+-------+------|
 
 In order to advance to the next round, an actor requires a minimum amount of energy. If the actor manages to obtain a surplus of energy, it will be able to reproduce and an additional actor will join the population. However, if an actor doesn't have any remaining energy at the end of a round it will be removed from the population permanently.
 

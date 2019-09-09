@@ -30,5 +30,10 @@ public class BaseBehaviour {
 	 */
 	public void prepareNextRound(Actions opponentAction) {
 	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 
 }

@@ -2,7 +2,7 @@ package items.actors;
 
 import items.actions.ActionUtils.Actions;
 import items.behaviours.BaseBehaviour;
-import items.behaviours.implementations.IdleBehaviour;
+import items.behaviours.utils.BehaviourFactory;
 
 /**
  * Base entity of the game theory population. Each entity defines its energy
@@ -13,14 +13,9 @@ import items.behaviours.implementations.IdleBehaviour;
 public class BaseActor {
 
 	/**
-	 * Name to identify the actor
+	 * Behaviour of the actor in front of other actors.
 	 */
-	protected String actorName;
-
-	/**
-	 * Actor identifier. Used to determine their behaviour.
-	 */
-	protected Integer actorId;
+	protected BaseBehaviour actorBehaviour;
 
 	/**
 	 * Energy of the actor in the current round. Influences survivability and the
@@ -29,67 +24,50 @@ public class BaseActor {
 	protected Double actorEnergy;
 
 	/**
-	 * Behaviour of the actor in front of other actors.
-	 */
-	protected BaseBehaviour actorBehaviour;
-
-	/**
 	 * Empty constructor.
 	 */
 	public BaseActor() {
-		this.actorName = "BaseActor";
-		this.actorId = -1;
-		this.actorEnergy = 1.0d;
-		this.actorBehaviour = new IdleBehaviour();
+		this.actorBehaviour = BehaviourFactory.create("IdleBehaviour");
+		this.actorEnergy = 0.0d;
 	}
 
 	/**
 	 * Constructor.
 	 */
-	public BaseActor(String name, Integer id) {
-		this.actorName = name;
-		this.actorId = id;
-		this.actorEnergy = 1.0d;
-		this.actorBehaviour = new IdleBehaviour();
-	}
-
-	/**
-	 * Constructor.
-	 */
-	public BaseActor(String name, Integer id, Double energy) {
-		this.actorName = name;
-		this.actorId = id;
-		this.actorEnergy = energy;
-		this.actorBehaviour = new IdleBehaviour();
-	}
-
-	/**
-	 * Assign a behaviour to the actor.
-	 */
-	public void setBehaviour(BaseBehaviour behaviour) {
+	public BaseActor(BaseBehaviour behaviour) {
 		this.actorBehaviour = behaviour;
+		this.actorEnergy = 0.0d;
 	}
 
 	/**
-	 * Get the actor's name.
-	 * 
-	 * @return {@linkplain #actorName}
+	 * Constructor.
 	 */
-	public String getName() {
-		return this.actorName;
+	public BaseActor(BaseBehaviour behaviour, Double energy) {
+		this.actorBehaviour = behaviour;
+		this.actorEnergy = energy;
 	}
 
 	/**
-	 * Get the actor's behaviour identifier.
+	 * Copy constructor.
 	 * 
-	 * @return {@linkplain #actorId}
+	 * @param other The BaseActor to copy.
 	 */
-	public Integer getId() {
-		return this.actorId;
+	public BaseActor(BaseActor other) {
+		this.actorBehaviour = BehaviourFactory.create(other.getBehaviourName());
+		this.actorEnergy = 0.0d;
 	}
 
 	/**
-	 * Get the actor's name.
+	 * Get the name of the actor's behaviour.
+	 * 
+	 * @return The behaviour's name
+	 */
+	public String getBehaviourName() {
+		return this.actorBehaviour.toString();
+	}
+
+	/**
+	 * Get the actor's energy.
 	 * 
 	 * @return {@linkplain #actorEnergy}
 	 */
@@ -103,7 +81,7 @@ public class BaseActor {
 	 * @return True if the actor can survive. False otherwise.
 	 */
 	public boolean canSurvive() {
-		return this.actorEnergy >= 1.0d;
+		return this.actorEnergy > 0.0d;
 	}
 
 	/**
@@ -113,7 +91,7 @@ public class BaseActor {
 	 * @return True if the actor can reproduce. False otherwise.
 	 */
 	public boolean canReproduce() {
-		return this.actorEnergy >= 2.0d;
+		return this.actorEnergy > 1.0d;
 	}
 
 	/**
@@ -152,7 +130,7 @@ public class BaseActor {
 
 	@Override
 	public String toString() {
-		return String.format("(%d) %s: %.2f", this.actorId, this.actorName, this.actorEnergy);
+		return String.format("%s: %.2f", this.actorBehaviour, this.actorEnergy);
 	}
 
 }

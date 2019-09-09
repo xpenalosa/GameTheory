@@ -9,8 +9,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import items.actions.ActionUtils.Actions;
-import items.behaviours.BaseBehaviour;
-import items.behaviours.implementations.ShareBehaviour;
+import items.behaviours.utils.BehaviourFactory;
 
 /**
  * Test class for the BaseActor class.
@@ -23,47 +22,44 @@ public class BaseActorTest {
 	public void testBaseActor() {
 		BaseActor ba = new BaseActor();
 		assertNotNull("BaseActor is null", ba);
+		assertSame("BaseActor.getPerformedAction() unexpected value", ba.getPerformedAction(), Actions.GIVE);
+		assertEquals("BaseActor.getEnergy() unexpected value", ba.getEnergy(), 0.0d, 0.0d);
 	}
 
 	@Test
-	public void testBaseActorStringInteger() {
-		BaseActor ba = new BaseActor("Name", 1);
+	public void testBaseActorBaseBehaviour() throws Exception {
+		BaseActor ba = new BaseActor(BehaviourFactory.create("IdleBehaviour"));
 		assertNotNull("BaseActor is null", ba);
+		assertSame("BaseActor.getPerformedAction() unexpected value", ba.getPerformedAction(), Actions.GIVE);
+		assertEquals("BaseActor.getEnergy() unexpected value", ba.getEnergy(), 0.0d, 0.0d);
 	}
 
 	@Test
-	public void testBaseActorStringIntegerDouble() throws Exception {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
+	public void testBaseActorBaseBehaviourDouble() throws Exception {
+		BaseActor ba = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 1.0d);
 		assertNotNull("BaseActor is null", ba);
+		assertSame("BaseActor.getPerformedAction() unexpected value", ba.getPerformedAction(), Actions.GIVE);
+		assertEquals("BaseActor.getEnergy() unexpected value", ba.getEnergy(), 1.0d, 0.0d);
 	}
 
 	@Test
-	public void testSetBehaviour() throws Exception {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
-		ba.setBehaviour(new BaseBehaviour());
-		assertNotNull("BaseActor.actorBehaviour is null", ba.actorBehaviour);
-
+	public void testBaseActorBaseActor() throws Exception {
+		BaseActor ba = new BaseActor();
+		BaseActor ba2 = new BaseActor(ba);
+		assertNotNull("BaseActor copy is null", ba2);
+		assertSame("BaseActor.getPerformedAction() unexpected value", ba2.getPerformedAction(), Actions.GIVE);
+		assertEquals("BaseActor.getEnergy() unexpected value", ba2.getEnergy(), 0.0d, 0.0d);
+		
+		BaseActor ba3 = new BaseActor(BehaviourFactory.create("TakeBehaviour"), 1.0d);
+		BaseActor ba4 = new BaseActor(ba3);
+		assertNotNull("BaseActor copy is null", ba4);
+		assertSame("BaseActor.getPerformedAction() unexpected value", ba4.getPerformedAction(), Actions.TAKE);
+		assertEquals("BaseActor.getEnergy() unexpected value", ba4.getEnergy(), 0.0d, 0.0d);
 	}
-
-	@Test
-	public void testGetName() {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
-		String baName = ba.getName();
-		assertNotNull("BaseActor.actorName is null", baName);
-		assertEquals("BaseActor.actorName does not match", baName, "Name");
-	}
-
-	@Test
-	public void testGetId() {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
-		Integer baId = ba.getId();
-		assertNotNull("BaseActor.actorId is null", baId);
-		assertSame("BaseActor.actorId does not match", baId, Integer.valueOf(1));
-	}
-
+	
 	@Test
 	public void testGetEnergy() {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
+		BaseActor ba = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 1.0d);
 		Double baEnergy = ba.getEnergy();
 		assertNotNull("BaseActor.actorEnergy is null", baEnergy);
 		assertEquals("BaseActor.actorEnergy does not match", baEnergy, 1.0d, 0.0d);
@@ -71,23 +67,23 @@ public class BaseActorTest {
 
 	@Test
 	public void testCanSurvive() {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
-		assertTrue("BaseActor.canSurvive() unexpected value for energy = 1.0d", ba.canSurvive());
-		BaseActor ba2 = new BaseActor("Name", 1, 0.9d);
-		assertFalse("BaseActor.canSurvive() unexpected value for energy = 0.9d", ba2.canSurvive());
+		BaseActor ba = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 0.5d);
+		assertTrue("BaseActor.canSurvive() unexpected value for energy = 0.5d", ba.canSurvive());
+		BaseActor ba2 = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 0.0d);
+		assertFalse("BaseActor.canSurvive() unexpected value for energy = 0.0d", ba2.canSurvive());
 	}
 
 	@Test
 	public void testCanReproduce() {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
+		BaseActor ba = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 1.0d);
 		assertFalse("BaseActor.canReproduce() unexpected value for energy = 1.0d", ba.canReproduce());
-		BaseActor ba2 = new BaseActor("Name", 1, 2.0d);
-		assertTrue("BaseActor.canReproduce() unexpected value for energy = 2.0d", ba2.canReproduce());
+		BaseActor ba2 = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 1.1d);
+		assertTrue("BaseActor.canReproduce() unexpected value for energy = 1.1d", ba2.canReproduce());
 	}
 
 	@Test
 	public void testIncreaseEnergy() throws Exception {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
+		BaseActor ba = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 1.0d);
 		Double baEnergy = ba.getEnergy();
 		ba.increaseEnergy(0.1d);
 		assertEquals("BaseActor.actorEnergy unexpected value after increaseEnergy()", baEnergy + 0.1d, ba.getEnergy(),
@@ -96,7 +92,7 @@ public class BaseActorTest {
 
 	@Test
 	public void testReduceEnergy() {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
+		BaseActor ba = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 1.0d);
 		Double baEnergy = ba.getEnergy();
 		ba.reduceEnergy(0.1d);
 		assertEquals("BaseActor.actorEnergy unexpected value after reduceEnergy()", baEnergy - 0.1d, ba.getEnergy(),
@@ -105,15 +101,15 @@ public class BaseActorTest {
 
 	@Test
 	public void testToString() {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
+		BaseActor ba = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 1.0d);
 		String baToString = ba.toString();
 		assertNotNull("BaseActor.toString() returns null", baToString);
-		assertEquals("BaseActor.toString() does not match", baToString, "(1) Name: 1.00");
+		assertEquals("BaseActor.toString() does not match", baToString, "IdleBehaviour: 1.00");
 	}
 
 	@Test
 	public void testSurvivalIteration() {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
+		BaseActor ba = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 1.0d);
 		assertTrue("BaseActor.canSurvive() unexpected value for energy = 1.0d", ba.canSurvive());
 		ba.reduceEnergy(1.0d);
 		assertFalse("BaseActor.canSurvive() unexpected value after reduceEnergy()", ba.canSurvive());
@@ -121,9 +117,9 @@ public class BaseActorTest {
 
 	@Test
 	public void testReproductiveIteration() {
-		BaseActor ba = new BaseActor("Name", 1, 2.0d);
-		assertTrue("BaseActor.canSurvive() unexpected value for energy = 2.0d", ba.canSurvive());
-		assertTrue("BaseActor.canReproduce() unexpected value for energy = 2.0d", ba.canReproduce());
+		BaseActor ba = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 1.5d);
+		assertTrue("BaseActor.canSurvive() unexpected value for energy = 1.5d", ba.canSurvive());
+		assertTrue("BaseActor.canReproduce() unexpected value for energy = 1.5d", ba.canReproduce());
 		ba.reduceEnergy(1.0d);
 		assertTrue("BaseActor.canSurvive() unexpected value after reduceEnergy()", ba.canSurvive());
 		assertFalse("BaseActor.canReproduce() unexpected value after reduceEnergy()", ba.canReproduce());
@@ -131,19 +127,11 @@ public class BaseActorTest {
 
 	@Test
 	public void testGetPerformedAction() throws Exception {
-		BaseActor ba = new BaseActor("Name", 1, 1.0d);
+		BaseActor ba = new BaseActor(BehaviourFactory.create("IdleBehaviour"), 1.0d);
 		assertEquals("BaseActor.getDesiredPortion() unexpected value for null behaviour", ba.getPerformedAction(),
 				Actions.GIVE);
-
-		ba.setBehaviour(new ShareBehaviour());
-		assertEquals("BaseActor.getDesiredPortion() unexpected value for other = null", ba.getPerformedAction(),
-				Actions.SHARE);
-
-		BaseActor baOther = new BaseActor("NameOther", 1, 1.0d);
-		baOther.setBehaviour(new BaseBehaviour());
-		assertEquals("BaseActor.getDesiredPortion() unexpected value after fight", ba.getPerformedAction(),
-				Actions.SHARE);
-
 	}
+
+	
 
 }

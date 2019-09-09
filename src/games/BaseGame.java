@@ -52,13 +52,20 @@ public class BaseGame {
 		this.prizes.parallelStream().forEach(prize -> prize.updateActors());
 		// Remove population without energy to survive
 		this.population.removeIf(actor -> !actor.canSurvive());
-		this.population.parallelStream().forEach(actor->actor.reduceEnergy(1.0d));
+		List<BaseActor> newActors = new ArrayList<BaseActor>();
+		for (BaseActor actor : this.population) {
+			if (actor.canReproduce()) {
+				newActors.add(new BaseActor(actor));
+			}
+		}
+		// Reset actor energies
+		this.population.parallelStream().forEach(actor->actor.reduceEnergy(actor.getEnergy()));
 	}
 
 	public void printPopulations() {
 		// Collect data into actorId:count map
-		Map<Integer, Long> populationCount = this.population.stream()
-				.collect(Collectors.groupingBy(actor -> actor.getId(), Collectors.counting()));
+		Map<String, Long> populationCount = this.population.stream()
+				.collect(Collectors.groupingBy(actor -> actor.getBehaviourName(), Collectors.counting()));
 		// Log data
 		BaseGame.logger.log(Level.INFO, String.format("Current populations: %s", populationCount.toString()));
 	}

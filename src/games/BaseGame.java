@@ -2,9 +2,10 @@ package games;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Map.Entry;
 
 import games.utils.GameUtils;
 import items.actors.BaseActor;
@@ -18,14 +19,19 @@ public class BaseGame {
 	protected List<BasePrize> prizes;
 
 	/**
-	 * List of actors in the current round. 
+	 * List of actors in the current round.
 	 */
 	protected List<BaseActor> population;
 
 	/**
+	 * Data for each round of the game.
+	 */
+	protected Map<String, List<Integer>> historicalData;
+
+	/**
 	 * Constructor.
 	 * 
-	 * @param prizeSize Number of prizes to create.
+	 * @param prizeSize             Number of prizes to create.
 	 * @param codedPopulationString Coded population string (See README)
 	 */
 	public BaseGame(int prizeSize, String codedPopulationString) {
@@ -34,6 +40,8 @@ public class BaseGame {
 			this.prizes.add(new BasePrize());
 		}
 		this.population = GameUtils.decodePopulationString(codedPopulationString);
+		this.historicalData = new HashMap<String, List<Integer>>();
+		GameUtils.updateMapFromPopulation(this.historicalData, this.population);
 	}
 
 	/**
@@ -45,6 +53,7 @@ public class BaseGame {
 		}
 		this.assignToPrizes();
 		this.updatePopulation();
+		GameUtils.updateMapFromPopulation(this.historicalData, this.population);
 	}
 
 	/**
@@ -81,15 +90,24 @@ public class BaseGame {
 		}
 		this.population.addAll(newActors);
 		// Lower population energy after surviving the round
-		this.population.parallelStream().forEach(actor->actor.reduceEnergy(BaseActor.SURVIVAL_ENERGY));
+		this.population.parallelStream().forEach(actor -> actor.reduceEnergy(BaseActor.SURVIVAL_ENERGY));
 	}
 
-	public void printPopulations() {
-		// Collect data into BehaviourType:count map
-		Map<String, Long> populationCount = this.population.stream()
-				.collect(Collectors.groupingBy(actor -> actor.getBehaviourName(), Collectors.counting()));
-		// Log data
-		System.out.println(String.format("%s", populationCount.toString()));
+	/**
+	 * Output a comma-separated list of the surviving populations in each round,
+	 * grouped by behaviour type.
+	 */
+	public void printGameSummary() {
+		StringBuilder sb = new StringBuilder();
+		for (Entry<String, List<Integer>> entry : this.historicalData.entrySet()) {
+			sb.append(entry.getKey());
+			for (Integer i : entry.getValue()) {
+				sb.append(",");
+				sb.append(i);
+			}
+			sb.append("\n");
+		}
+		System.out.println(sb.toString());
 	}
 
 }

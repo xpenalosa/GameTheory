@@ -67,7 +67,7 @@ public class BaseGame {
 	 */
 	protected void assignToPrizes() {
 		// Clear previous assignations
-		prizes.parallelStream().forEach(prize -> prize.clear());
+		this.prizes.parallelStream().forEach(prize -> prize.clear());
 		// Randomize assignations
 		Collections.shuffle(this.population);
 

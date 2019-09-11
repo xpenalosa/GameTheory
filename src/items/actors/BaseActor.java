@@ -13,6 +13,15 @@ import items.behaviours.utils.BehaviourFactory;
 public class BaseActor {
 
 	/**
+	 * Energy required to survive a round.
+	 */
+	public static final double SURVIVAL_ENERGY = 0.5d;
+	/**
+	 * Energy required to reproduce in a round.
+	 */
+	public static final double REPRODUCTIVE_ENERGY = 2.0d;
+	
+	/**
 	 * Behaviour of the actor in front of other actors.
 	 */
 	protected BaseBehaviour actorBehaviour;
@@ -81,7 +90,7 @@ public class BaseActor {
 	 * @return True if the actor can survive. False otherwise.
 	 */
 	public boolean canSurvive() {
-		return this.actorEnergy > 0.0d;
+		return this.actorEnergy >= SURVIVAL_ENERGY;
 	}
 
 	/**
@@ -91,7 +100,7 @@ public class BaseActor {
 	 * @return True if the actor can reproduce. False otherwise.
 	 */
 	public boolean canReproduce() {
-		return this.actorEnergy >= 1.0d;
+		return this.actorEnergy >= REPRODUCTIVE_ENERGY;
 	}
 
 	/**
@@ -100,7 +109,7 @@ public class BaseActor {
 	 * @param increasedAmount The amount of energy obtained.
 	 */
 	public void increaseEnergy(Double increasedAmount) {
-		this.actorEnergy = this.actorEnergy + increasedAmount;
+		this.actorEnergy = Math.min(BaseActor.REPRODUCTIVE_ENERGY, this.actorEnergy + increasedAmount);
 	}
 
 	/**

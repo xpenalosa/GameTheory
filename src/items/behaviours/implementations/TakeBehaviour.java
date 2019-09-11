@@ -10,6 +10,9 @@ import items.behaviours.BaseBehaviour;
  */
 public class TakeBehaviour extends BaseBehaviour {
 
+	/**
+	 * Constructor.
+	 */
 	public TakeBehaviour() {
 		super();
 	}

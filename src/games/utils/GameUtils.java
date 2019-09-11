@@ -9,6 +9,11 @@ import java.util.stream.Collectors;
 import items.actors.BaseActor;
 import items.behaviours.utils.BehaviourFactory;
 
+/**
+ * Utility class for games.
+ * 
+ * @author Xavier Peñalosa
+ */
 public abstract class GameUtils {
 
 	/**

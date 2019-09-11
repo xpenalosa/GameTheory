@@ -27,6 +27,9 @@ public class BasePrize {
 	 */
 	protected int actorCount;
 
+	/**
+	 * Constructor.
+	 */
 	public BasePrize() {
 		this.a1 = null;
 		this.a2 = null;
@@ -34,10 +37,20 @@ public class BasePrize {
 		this.actorCount = 0;
 	}
 
+	/**
+	 * Checks if more actors can be assigned to this price.
+	 * 
+	 * @return True if more actors can be added.
+	 */
 	public boolean canAddActor() {
 		return this.actorCount < 2;
 	}
 
+	/**
+	 * Assign an actor to this prize.
+	 * 
+	 * @param actor The actor to assign.
+	 */
 	public void addActor(BaseActor actor) {
 		switch (this.actorCount) {
 		case 0:
@@ -53,11 +66,16 @@ public class BasePrize {
 		}
 	}
 
+	/**
+	 * For all the actors that have been assigned to this prize, retrieve and
+	 * compare their actions. Assign the obtained energy based on
+	 * {@linkplain Actions#energyRelations}.
+	 */
 	public void updateActors() {
 
 		Actions action1 = this.a1 != null ? this.a1.getPerformedAction() : Actions.GIVE;
 		Actions action2 = this.a2 != null ? this.a2.getPerformedAction() : Actions.GIVE;
-		
+
 		if (this.a1 != null) {
 			this.a1.increaseEnergy(Actions.energyRelations[action1.ordinal()][action2.ordinal()]);
 		}
@@ -66,6 +84,9 @@ public class BasePrize {
 		}
 	}
 
+	/**
+	 * Unassign the actors on this prize.
+	 */
 	public void clear() {
 		this.a1 = null;
 		this.a2 = null;

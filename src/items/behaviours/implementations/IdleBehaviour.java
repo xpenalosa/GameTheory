@@ -10,6 +10,9 @@ import items.behaviours.BaseBehaviour;
  */
 public class IdleBehaviour extends BaseBehaviour {
 
+	/**
+	 * Constructor.
+	 */
 	public IdleBehaviour() {
 		super();
 	}

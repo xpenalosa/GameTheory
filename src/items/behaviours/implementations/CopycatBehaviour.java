@@ -16,6 +16,9 @@ public class CopycatBehaviour extends BaseBehaviour {
 	 */
 	protected Actions lastAction;
 
+	/**
+	 * Constructor.
+	 */
 	public CopycatBehaviour() {
 		super();
 		this.lastAction = Actions.SHARE;

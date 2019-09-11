@@ -17,6 +17,9 @@ public class VengefulBehaviour extends BaseBehaviour {
 	 */
 	protected boolean isVengative;
 
+	/**
+	 * Constructor.
+	 */
 	public VengefulBehaviour() {
 		super();
 		this.isVengative = false;

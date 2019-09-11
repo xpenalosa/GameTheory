@@ -11,6 +11,12 @@ import games.utils.GameUtils;
 import items.actors.BaseActor;
 import items.prizes.BasePrize;
 
+/**
+ * Basic game that consists on an arbitrary number of rounds where a population
+ * fights for survival.
+ * 
+ * @author Xavier Peñalosa.
+ */
 public class BaseGame {
 
 	/**

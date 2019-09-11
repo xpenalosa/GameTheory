@@ -10,6 +10,9 @@ import items.behaviours.BaseBehaviour;
  */
 public class ShareBehaviour extends BaseBehaviour {
 
+	/**
+	 * Constructor.
+	 */
 	public ShareBehaviour() {
 		super();
 	}

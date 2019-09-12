@@ -61,7 +61,9 @@ public abstract class GameUtils {
 			if (map.containsKey(entry.getKey())) {
 				map.get(entry.getKey()).add(entry.getValue().intValue());
 			} else {
-				map.put(entry.getKey(), new ArrayList<Integer>(entry.getValue().intValue()));
+				ArrayList<Integer> countList = new ArrayList<Integer>();
+				countList.add(entry.getValue().intValue());
+				map.put(entry.getKey(), countList);
 			}
 		}
 	}

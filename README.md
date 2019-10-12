@@ -16,7 +16,7 @@ For each round, if the amount of actors is lower or equal to the amount of prize
 	| Take   |  2.0 |   1.5 | -0.5 |
 	+--------+------+-------+------|
 
-In order to advance to the next round, an actor requires a minimum amount of energy. If the actor manages to obtain a surplus of energy, it will be able to reproduce and an additional actor will join the population. However, if an actor doesn't have any remaining energy at the end of a round it will be removed from the population permanently.
+In order to advance to the next round, an actor requires a minimum amount of energy. If the actor manages to obtain a surplus of energy, it will be able to reproduce and an additional actor will join the population. However, if an actor doesn't have any remaining energy at the end of a round it will be removed from the population permanently. In order to see a visual explanation of the basics on this experiment, see [this video (YouTube)](https://www.youtube.com/watch?v=YNMkADpvO4w).
 
 ### Behaviours
 
